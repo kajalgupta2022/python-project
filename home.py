@@ -1,47 +1,38 @@
-def add(x, y):
-    return x + y
+import random
+import string
 
-def subtract(x, y):
-    return x - y
+def generate_password(length=12):
+    """Generate a random password of a given length."""
+    if length < 4:
+        raise ValueError("Password length should be at least 4")
 
-def multiply(x, y):
-    return x * y
+    # Define the possible characters for the password
+    all_characters = string.ascii_letters + string.digits + string.punctuation
 
-def divide(x, y):
-    if y == 0:
-        return "Error! Division by zero."
-    return x / y
+    # Ensure the password has at least one of each required character type
+    password = [
+        random.choice(string.ascii_uppercase),
+        random.choice(string.ascii_lowercase),
+        random.choice(string.digits),
+        random.choice(string.punctuation)
+    ]
+
+    # Fill the rest of the password length with random characters
+    password += random.choices(all_characters, k=length - 4)
+
+    # Shuffle the list to avoid predictable patterns
+    random.shuffle(password)
+
+    # Join the list into a string to form the final password
+    return ''.join(password)
 
 def main():
-    while True:
-        print("\nSimple Calculator")
-        print("1. Add")
-        print("2. Subtract")
-        print("3. Multiply")
-        print("4. Divide")
-        print("5. Exit")
-
-        choice = input("Enter your choice (1-5): ")
-
-        if choice in ['1', '2', '3', '4']:
-            num1 = float(input("Enter first number: "))
-            num2 = float(input("Enter second number: "))
-
-            if choice == '1':
-                print(f"The result is: {add(num1, num2)}")
-            elif choice == '2':
-                print(f"The result is: {subtract(num1, num2)}")
-            elif choice == '3':
-                print(f"The result is: {multiply(num1, num2)}")
-            elif choice == '4':
-                print(f"The result is: {divide(num1, num2)}")
-
-        elif choice == '5':
-            print("Exiting the calculator.")
-            break
-
-        else:
-            print("Invalid choice. Please select a valid option.")
+    try:
+        length = int(input("Enter the desired password length: "))
+        password = generate_password(length)
+        print(f"Generated Password: {password}")
+    except ValueError as e:
+        print(f"Error: {e}. Please enter a valid number.")
 
 if __name__ == "__main__":
     main()
