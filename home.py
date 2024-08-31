@@ -1,63 +1,80 @@
-import sys
+class Contact:
+    def __init__(self, name, phone, email):
+        self.name = name
+        self.phone = phone
+        self.email = email
 
-class ToDoList:
+    def __str__(self):
+        return f"Name: {self.name}, Phone: {self.phone}, Email: {self.email}"
+
+class ContactBook:
     def __init__(self):
-        self.tasks = []
+        self.contacts = []
 
-    def add_task(self, task):
-        """Add a task to the to-do list."""
-        self.tasks.append(task)
-        print(f"Task added: {task}")
+    def add_contact(self, name, phone, email):
+        contact = Contact(name, phone, email)
+        self.contacts.append(contact)
+        print(f"Contact added: {contact.name}")
 
-    def remove_task(self, task_number):
-        """Remove a task from the to-do list by its number."""
-        if 0 <= task_number < len(self.tasks):
-            removed_task = self.tasks.pop(task_number)
-            print(f"Task removed: {removed_task}")
+    def view_contacts(self):
+        if not self.contacts:
+            print("No contacts available.")
         else:
-            print("Invalid task number.")
+            print("Contact List:")
+            for index, contact in enumerate(self.contacts, start=1):
+                print(f"{index}. {contact}")
 
-    def display_tasks(self):
-        """Display all tasks in the to-do list."""
-        if not self.tasks:
-            print("No tasks in the list.")
+    def update_contact(self, contact_index, name, phone, email):
+        if 0 <= contact_index < len(self.contacts):
+            contact = self.contacts[contact_index]
+            contact.name = name
+            contact.phone = phone
+            contact.email = email
+            print(f"Contact updated: {contact.name}")
         else:
-            print("To-Do List:")
-            for index, task in enumerate(self.tasks, start=1):
-                print(f"{index}. {task}")
+            print("Invalid contact index.")
 
-    def clear_tasks(self):
-        """Clear all tasks from the to-do list."""
-        self.tasks.clear()
-        print("All tasks have been cleared.")
+    def delete_contact(self, contact_index):
+        if 0 <= contact_index < len(self.contacts):
+            removed_contact = self.contacts.pop(contact_index)
+            print(f"Contact deleted: {removed_contact.name}")
+        else:
+            print("Invalid contact index.")
 
 def main():
-    todo_list = ToDoList()
+    contact_book = ContactBook()
 
     while True:
-        print("\nTo-Do List Options:")
-        print("1. Add a task")
-        print("2. Remove a task")
-        print("3. View tasks")
-        print("4. Clear all tasks")
+        print("\nContact Book Options:")
+        print("1. Add a contact")
+        print("2. View all contacts")
+        print("3. Update a contact")
+        print("4. Delete a contact")
         print("5. Exit")
 
         choice = input("Enter your choice (1-5): ")
 
         if choice == '1':
-            task = input("Enter the task: ")
-            todo_list.add_task(task)
+            name = input("Enter contact name: ")
+            phone = input("Enter contact phone: ")
+            email = input("Enter contact email: ")
+            contact_book.add_contact(name, phone, email)
         elif choice == '2':
-            todo_list.display_tasks()
-            task_number = int(input("Enter the task number to remove: ")) - 1
-            todo_list.remove_task(task_number)
+            contact_book.view_contacts()
         elif choice == '3':
-            todo_list.display_tasks()
+            contact_book.view_contacts()
+            contact_index = int(input("Enter the contact number to update: ")) - 1
+            name = input("Enter new contact name: ")
+            phone = input("Enter new contact phone: ")
+            email = input("Enter new contact email: ")
+            contact_book.update_contact(contact_index, name, phone, email)
         elif choice == '4':
-            todo_list.clear_tasks()
+            contact_book.view_contacts()
+            contact_index = int(input("Enter the contact number to delete: ")) - 1
+            contact_book.delete_contact(contact_index)
         elif choice == '5':
-            print("Exiting the to-do list app.")
-            sys.exit()
+            print("Exiting the contact book app.")
+            break
         else:
             print("Invalid choice. Please select a valid option.")
 
